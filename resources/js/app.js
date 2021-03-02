@@ -12,6 +12,16 @@ window.Vue = require('vue').default;
 import router from './router';
 import App from './layouts/App.vue';
 
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+import storeData from "./store/index"
+
+const store = new Vuex.Store(
+    storeData
+)
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,5 +44,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     router,
     el: '#app',
+    store, //vuex
     render: h => h(App)
 });

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Home from './pages/Home.vue';
-import About from './pages/About.vue';
+import About from './pages/Preview.vue';
 
 Vue.use(VueRouter);
 
@@ -16,8 +16,8 @@ const router = new VueRouter({
             component: Home
         },
         {
-            path: '/about',
-            name: 'about',
+            path: '/preview',
+            name: 'preview',
             component: About
         },
     ]
