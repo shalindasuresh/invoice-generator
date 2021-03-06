@@ -16,6 +16,15 @@ Route::get('/', function () {
     return view('layouts.vue');
 })->where('any', '.*');
 
-Route::get('/test', function () {
+Route::post('/test', function () {
+    \Illuminate\Support\Facades\Mail::to('shalinda1990@gmail.com')->send(new \App\Mail\InvoiceSend());
+});
+
+Route::get('/now', function () {
+
+//    return $pdf->stream();
+
+
+
     \Illuminate\Support\Facades\Mail::to('shalinda1990@gmail.com')->send(new \App\Mail\InvoiceSend());
 });

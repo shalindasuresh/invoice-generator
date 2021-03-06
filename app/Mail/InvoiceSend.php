@@ -18,7 +18,7 @@ class InvoiceSend extends Mailable
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -28,6 +28,8 @@ class InvoiceSend extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.invoice_template');
+        $pdf = \Illuminate\Support\Facades\App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $this->attachData($pdf->output(),'filename.pdf')->view('templates.emails.invoice');
     }
 }
