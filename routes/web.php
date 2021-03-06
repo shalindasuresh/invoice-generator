@@ -16,6 +16,6 @@ Route::get('/', function () {
     return view('layouts.vue');
 })->where('any', '.*');
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/test', function () {
+    \Illuminate\Support\Facades\Mail::to('shalinda1990@gmail.com')->send(new \App\Mail\InvoiceSend());
+});

@@ -10004,3 +10004,10 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  background: #ffed4a;
+  text-align: center;
+  background-size: auto;
+}
