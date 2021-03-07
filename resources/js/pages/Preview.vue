@@ -7,10 +7,10 @@
 
                     <div class="card-body">
                         <div id="preview">
-                            <img v-if="url" :src="url"/>
+                            <img v-if="this.invoice_data.url" :src="this.invoice_data.url"/>
                         </div>
-                        <span>{{ this.sender }}</span>
-                        <span>{{ this.receiver }}</span>
+                        <span>{{ this.invoice_data.sender }}</span>
+                        <span>{{ this.invoice_data.receiver }}</span>
                         <!--                        <button @click="getInvoiceData">Click here</button>-->
 
 
@@ -34,11 +34,15 @@
 import VueButtonSpinner from 'vue-button-spinner';
 
 export default {
+
     data() {
+        // let   invoice_data={}
         return {
-            url: null,
-            sender: null,
-            receiver: null,
+            invoice_data:{
+                url:null,
+                sender:null,
+                receiver:null
+            },
             isLoading: false,
             status: '',
             buttonText: "Send Invoice"
@@ -48,11 +52,11 @@ export default {
         VueButtonSpinner
     },
     mounted: function () {
-        this.invoice_data = this.$store.getters.getInvoiceData
+        const userData= this.$store.getters.getInvoiceData
 
-        this.url = URL.createObjectURL(this.invoice_data.banner[0]);
-        this.sender = this.invoice_data.sender
-        this.receiver = this.invoice_data.receiver
+        this.url =userData.banner_url
+        this.invoice_data.sender =userData.sender
+        this.invoice_data.receiver = userData.receiver
 
 
     },
@@ -62,8 +66,9 @@ export default {
             this.status = true // or s
             this.buttonText = "Sending"
 
+            console.log(this.invoice_data);
             try {
-                const resp = await axios.post('/test', {});
+                const resp = await axios.post('/send', this.invoice_data);
                 console.log(resp.data);
 
                 this.isLoading = false
@@ -75,23 +80,12 @@ export default {
                 this.isLoading = false
                 this.status = true // or s
                 this.buttonText = "Error"
+            }finally {
+                // this.$router.push({ name: 'home' })
             }
 
 
         }
-
-        //     this.axios
-        //         .post('http://localhost:8000/api/products', this.product)
-        //         .then(response => (
-        //             // this.$router.push({ name: 'home' })
-        //             this.isLoading = true
-        //             this.status = true // or s
-        //             this.buttonText = "Sending"
-        // ))
-        // .
-        //     catch(err => console.log(err))
-        //         .finally(() => this.loading = false)
-        // }
     }
 
 }

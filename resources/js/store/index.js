@@ -9,13 +9,14 @@ export default {
     getters: {
 
         getInvoiceData(state) { //take parameter state
-
+            console.log(state.invoice_data)
             return state.invoice_data
         }
     },
 
     actions: {
         addData(context, data) {
+
 
             // axios.get("api/category")
             //
@@ -37,8 +38,7 @@ export default {
     mutations: {
         categories(state, data) {
 
-            [state.invoice_data.banner, state.invoice_data.sender,  state.invoice_data.receiver] = data
-
+            state.invoice_data= data
         }
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,15 +18,16 @@ Route::get('/', function () {
     return view('layouts.vue');
 })->where('any', '.*');
 
-Route::post('/test', function () {
-    \Illuminate\Support\Facades\Mail::to('shalinda1990@gmail.com')->send(new \App\Mail\InvoiceSend());
+Route::post('/send2', function (Request $request) {
+
+    \Illuminate\Support\Facades\Mail::to($request->input('receiver'))->send(new \App\Mail\InvoiceSend($request));
 });
 
+Route::post('/send', [\App\Http\Controllers\InvoiceDataController::class, 'sendInvoice']);
+
+/*
 Route::get('/now', function () {
-
 //    return $pdf->stream();
-
-
-
     \Illuminate\Support\Facades\Mail::to('shalinda1990@gmail.com')->send(new \App\Mail\InvoiceSend());
 });
+*/

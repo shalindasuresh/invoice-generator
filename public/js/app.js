@@ -1994,7 +1994,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2003,18 +2002,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      files: [],
-      sender: null,
-      receiver: null,
-      url: null,
+      invoice_data: {// sender:null,
+        // receiver:null,
+        // banner_url:null,
+      },
       date: new Date().toDateString("yyyy-MM-dd")
     };
   },
   methods: {
+    previewPage: function previewPage() {
+      this.$store.dispatch("addData", this.invoice_data);
+      this.$router.push({
+        path: '/preview'
+      });
+    },
     selectFile: function selectFile() {
-      this.files = this.$refs.myFiles.files;
-      this.url = URL.createObjectURL(this.files[0]);
-      this.$store.dispatch("addData", [this.files, this.sender, this.receiver]);
+      var bannerImage = this.$refs.banner_img.files[0];
+      this.invoice_data.banner_url = URL.createObjectURL(bannerImage);
     },
     isPastDate: function isPastDate(date) {
       var currentDate = new Date();
@@ -2081,10 +2085,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
+    // let   invoice_data={}
     return {
-      url: null,
-      sender: null,
-      receiver: null,
+      invoice_data: {
+        url: null,
+        sender: null,
+        receiver: null
+      },
       isLoading: false,
       status: '',
       buttonText: "Send Invoice"
@@ -2094,10 +2101,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     VueButtonSpinner: (vue_button_spinner__WEBPACK_IMPORTED_MODULE_1___default())
   },
   mounted: function mounted() {
-    this.invoice_data = this.$store.getters.getInvoiceData;
-    this.url = URL.createObjectURL(this.invoice_data.banner[0]);
-    this.sender = this.invoice_data.sender;
-    this.receiver = this.invoice_data.receiver;
+    var userData = this.$store.getters.getInvoiceData;
+    this.url = userData.banner_url;
+    this.invoice_data.sender = userData.sender;
+    this.invoice_data.receiver = userData.receiver;
   },
   methods: {
     sendInvoice: function sendInvoice() {
@@ -2114,23 +2121,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.status = true; // or s
 
                 _this.buttonText = "Sending";
-                _context.prev = 3;
-                _context.next = 6;
-                return axios.post('/test', {});
+                console.log(_this.invoice_data);
+                _context.prev = 4;
+                _context.next = 7;
+                return axios.post('/send', _this.invoice_data);
 
-              case 6:
+              case 7:
                 resp = _context.sent;
                 console.log(resp.data);
                 _this.isLoading = false;
                 _this.status = true; // or s
 
                 _this.buttonText = "Success";
-                _context.next = 19;
+                _context.next = 20;
                 break;
 
-              case 13:
-                _context.prev = 13;
-                _context.t0 = _context["catch"](3);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](4);
                 // Handle Error Here
                 console.error(_context.t0);
                 _this.isLoading = false;
@@ -2138,26 +2146,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.buttonText = "Error";
 
-              case 19:
+              case 20:
+                _context.prev = 20;
+                return _context.finish(20);
+
+              case 22:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[3, 13]]);
+        }, _callee, null, [[4, 14, 20, 22]]);
       }))();
-    } //     this.axios
-    //         .post('http://localhost:8000/api/products', this.product)
-    //         .then(response => (
-    //             // this.$router.push({ name: 'home' })
-    //             this.isLoading = true
-    //             this.status = true // or s
-    //             this.buttonText = "Sending"
-    // ))
-    // .
-    //     catch(err => console.log(err))
-    //         .finally(() => this.loading = false)
-    // }
-
+    }
   }
 });
 
@@ -2310,18 +2310,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: {
     invoice_data: []
@@ -2329,6 +2317,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   getters: {
     getInvoiceData: function getInvoiceData(state) {
       //take parameter state
+      console.log(state.invoice_data);
       return state.invoice_data;
     }
   },
@@ -2350,11 +2339,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   mutations: {
     categories: function categories(state, data) {
-      var _data = _slicedToArray(data, 3);
-
-      state.invoice_data.banner = _data[0];
-      state.invoice_data.sender = _data[1];
-      state.invoice_data.receiver = _data[2];
+      state.invoice_data = data;
     }
   }
 });
@@ -39360,11 +39345,14 @@ var render = function() {
                   "figure",
                   {
                     staticClass: "figure image-placeholder",
-                    style: { backgroundImage: "url(" + _vm.url + ")" }
+                    style: {
+                      backgroundImage:
+                        "url(" + this.invoice_data.banner_url + ")"
+                    }
                   },
                   [
                     _c("input", {
-                      ref: "myFiles",
+                      ref: "banner_img",
                       staticClass: "custom-file-input",
                       attrs: { type: "file", id: "uploadImage" },
                       on: { change: _vm.selectFile }
@@ -39386,18 +39374,22 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.sender,
-                        expression: "sender"
+                        value: _vm.invoice_data.sender,
+                        expression: "invoice_data.sender"
                       }
                     ],
                     attrs: { placeholder: "Sender Email" },
-                    domProps: { value: _vm.sender },
+                    domProps: { value: _vm.invoice_data.sender },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.sender = $event.target.value
+                        _vm.$set(
+                          _vm.invoice_data,
+                          "sender",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -39407,18 +39399,22 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.receiver,
-                        expression: "receiver"
+                        value: _vm.invoice_data.receiver,
+                        expression: "invoice_data.receiver"
                       }
                     ],
                     attrs: { placeholder: "Receiver Email" },
-                    domProps: { value: _vm.receiver },
+                    domProps: { value: _vm.invoice_data.receiver },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.receiver = $event.target.value
+                        _vm.$set(
+                          _vm.invoice_data,
+                          "receiver",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -39426,24 +39422,24 @@ var render = function() {
                   _c("date-pick", {
                     attrs: { isDateDisabled: _vm.isPastDate },
                     model: {
-                      value: _vm.date,
+                      value: _vm.invoice_data.date,
                       callback: function($$v) {
-                        _vm.date = $$v
+                        _vm.$set(_vm.invoice_data, "date", $$v)
                       },
-                      expression: "date"
+                      expression: "invoice_data.date"
                     }
                   }),
                   _vm._v(" "),
                   _c(
-                    "router-link",
+                    "button",
                     {
-                      staticClass: "nav-link",
-                      attrs: {
-                        "data-toggle": "collapse",
-                        to: { name: "preview" }
+                      on: {
+                        click: function($event) {
+                          return _vm.previewPage()
+                        }
                       }
                     },
-                    [_vm._v("Preview\n                            ")]
+                    [_vm._v("Preview")]
                   )
                 ],
                 1
@@ -39489,12 +39485,14 @@ var render = function() {
             { staticClass: "card-body" },
             [
               _c("div", { attrs: { id: "preview" } }, [
-                _vm.url ? _c("img", { attrs: { src: _vm.url } }) : _vm._e()
+                this.invoice_data.url
+                  ? _c("img", { attrs: { src: this.invoice_data.url } })
+                  : _vm._e()
               ]),
               _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(this.sender))]),
+              _c("span", [_vm._v(_vm._s(this.invoice_data.sender))]),
               _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(this.receiver))]),
+              _c("span", [_vm._v(_vm._s(this.invoice_data.receiver))]),
               _vm._v(" "),
               _c(
                 "vue-button-spinner",

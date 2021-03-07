@@ -9,8 +9,8 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <figure class="figure image-placeholder"  v-bind:style='{ backgroundImage: "url(" + url + ")", }'>
-                                    <input type="file" id="uploadImage" ref="myFiles" class="custom-file-input" @change="selectFile" >
+                                <figure class="figure image-placeholder"  v-bind:style='{ backgroundImage: "url(" + this.invoice_data.banner_url + ")", }'>
+                                    <input type="file" id="uploadImage" ref="banner_img" class="custom-file-input" @change="selectFile" >
                                     <figcaption class="figure-caption">Select Banner</figcaption>
                                 </figure>
                             </div>
@@ -18,11 +18,10 @@
                             <div class="col-md-6">
 
 
-                                <input v-model="sender" placeholder="Sender Email">
-                                <input v-model="receiver" placeholder="Receiver Email">
-                                <date-pick v-model="date"   :isDateDisabled="isPastDate"></date-pick>
-                                <router-link class="nav-link" data-toggle="collapse" :to="{ name: 'preview' }">Preview
-                                </router-link>
+                                <input v-model="invoice_data.sender" placeholder="Sender Email">
+                                <input v-model="invoice_data.receiver" placeholder="Receiver Email">
+                                <date-pick v-model="invoice_data.date"   :isDateDisabled="isPastDate"></date-pick>
+                                <button @click="previewPage()">Preview</button>
                             </div>
                         </div>
 
@@ -37,23 +36,30 @@
 <script>
 import DatePick from 'vue-date-pick';
 import 'vue-date-pick/dist/vueDatePick.css';
+
 export default {
     components: {DatePick},
+
     data() {
         return {
-            files: [],
-            sender: null,
-            receiver: null,
-            url:null,
+            invoice_data:{
+                // sender:null,
+                // receiver:null,
+                // banner_url:null,
+            },
             date: new Date().toDateString("yyyy-MM-dd"),
         }
     },
     methods: {
-        selectFile() {
 
-            this.files = this.$refs.myFiles.files
-            this.url = URL.createObjectURL(this.files[0]);
-            this.$store.dispatch("addData", [this.files, this.sender, this.receiver])
+        previewPage() {
+            this.$store.dispatch("addData", this.invoice_data)
+            this.$router.push({ path: '/preview' });
+        },
+
+        selectFile() {
+            const bannerImage = this.$refs.banner_img.files[0]
+            this.invoice_data.banner_url = URL.createObjectURL(bannerImage);
         },
         isPastDate(date) {
             const currentDate = new Date();
