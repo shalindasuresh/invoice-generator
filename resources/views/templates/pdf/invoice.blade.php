@@ -10,5 +10,8 @@
 <body>
 <h1>{{$data['receiver']}}</h1>
 <h1>{{$data['sender']}}</h1>
+{{--<img src="{{ $data['banner_url']}}"/>--}}
+{{--<img src="@php echo  $data['banner_url'] @endphp"/>--}}
+<img src="<?php echo $data['banner_url']?>" width="150" height="150"/>
 </body>
 </html>

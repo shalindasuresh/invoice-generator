@@ -17,6 +17,7 @@ class CreateInvoiceDataTable extends Migration
             $table->id();
             $table->string("sender");
             $table->string("receiver");
+            $table->string("banner_url");
             $table->timestamps();
         });
     }

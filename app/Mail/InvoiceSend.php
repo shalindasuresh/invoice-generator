@@ -12,15 +12,17 @@ class InvoiceSend extends Mailable
 {
     use Queueable, SerializesModels;
     private $request;
+    private $banner_url;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($request,$banner_url)
     {
         $this->request=$request;
+        $this->banner_url=$banner_url;
 
     }
 
@@ -32,6 +34,7 @@ class InvoiceSend extends Mailable
     public function build()
     {
         $data = $this->request->all();
+        $data['banner_url']=$this->banner_url;
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('templates.pdf.invoice', ['data'=>$data]);

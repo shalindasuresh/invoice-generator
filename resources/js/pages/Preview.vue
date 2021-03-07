@@ -7,7 +7,7 @@
 
                     <div class="card-body">
                         <div id="preview">
-                            <img v-if="this.invoice_data.url" :src="this.invoice_data.url"/>
+                            <img v-if="this.invoice_data.banner_url" :src="this.invoice_data.banner_url"/>
                         </div>
                         <span>{{ this.invoice_data.sender }}</span>
                         <span>{{ this.invoice_data.receiver }}</span>
@@ -39,7 +39,7 @@ export default {
         // let   invoice_data={}
         return {
             invoice_data:{
-                url:null,
+                banner_url:null,
                 sender:null,
                 receiver:null
             },
@@ -53,12 +53,10 @@ export default {
     },
     mounted: function () {
         const userData= this.$store.getters.getInvoiceData
-
-        this.url =userData.banner_url
+        this.invoice_data.banner_file =userData.banner_file
+        this.invoice_data.banner_url =userData.banner_url
         this.invoice_data.sender =userData.sender
         this.invoice_data.receiver = userData.receiver
-
-
     },
     methods: {
         async sendInvoice() { //final output from here
@@ -68,8 +66,19 @@ export default {
 
             console.log(this.invoice_data);
             try {
-                const resp = await axios.post('/send', this.invoice_data);
-                console.log(resp.data);
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+
+                let data = new FormData()
+                data.append('banner_file',this.invoice_data.banner_file)
+                data.append('sender',this.invoice_data.sender)
+                data.append('receiver',this.invoice_data.receiver)
+
+                const resp = await axios.post('/send',  data, config)
 
                 this.isLoading = false
                 this.status = true // or s

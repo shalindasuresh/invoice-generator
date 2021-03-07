@@ -42,11 +42,7 @@ export default {
 
     data() {
         return {
-            invoice_data:{
-                // sender:null,
-                // receiver:null,
-                // banner_url:null,
-            },
+            invoice_data:{},
             date: new Date().toDateString("yyyy-MM-dd"),
         }
     },
@@ -58,8 +54,8 @@ export default {
         },
 
         selectFile() {
-            const bannerImage = this.$refs.banner_img.files[0]
-            this.invoice_data.banner_url = URL.createObjectURL(bannerImage);
+            this.invoice_data.banner_file = this.$refs.banner_img.files[0]
+            this.invoice_data.banner_url = URL.createObjectURL(this.invoice_data.banner_file);
         },
         isPastDate(date) {
             const currentDate = new Date();
