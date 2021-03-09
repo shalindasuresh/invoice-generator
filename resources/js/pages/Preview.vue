@@ -7,7 +7,7 @@
 
                     <div class="card-body">
                         <div id="preview">
-                            <img v-if="this.invoice_data.banner_url" :src="this.invoice_data.banner_url"/>
+                            <img v-if="this.invoice_data.banner_file" :src="this.invoice_data.banner_file"/>
                         </div>
                         <span>{{ this.invoice_data.sender }}</span>
                         <span>{{ this.invoice_data.receiver }}</span>
@@ -39,9 +39,9 @@ export default {
         // let   invoice_data={}
         return {
             invoice_data:{
-                banner_url:null,
                 sender:null,
-                receiver:null
+                receiver:null,
+                banner_file:null
             },
             isLoading: false,
             status: '',
@@ -54,7 +54,6 @@ export default {
     mounted: function () {
         const userData= this.$store.getters.getInvoiceData
         this.invoice_data.banner_file =userData.banner_file
-        this.invoice_data.banner_url =userData.banner_url
         this.invoice_data.sender =userData.sender
         this.invoice_data.receiver = userData.receiver
     },

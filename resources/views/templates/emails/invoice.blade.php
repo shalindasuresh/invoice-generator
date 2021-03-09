@@ -8,6 +8,12 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Hello There</h1>
+
+<p>Hi {{$data['receiver']}},</p>
+<p>A new invoice has been created on your account. You may find a PDF of your invoice attached.</p>
+<p>Thank you for your business!</p>
+<p>With Regards, </p>
+<p>{{$data['sender']}}</p>
+
 </body>
 </html>

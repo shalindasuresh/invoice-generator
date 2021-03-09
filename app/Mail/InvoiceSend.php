@@ -39,6 +39,6 @@ class InvoiceSend extends Mailable
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('templates.pdf.invoice', ['data'=>$data]);
 
-        return $this->attachData($pdf->output(),'invoice.pdf')->view('templates.emails.invoice');
+        return $this->attachData($pdf->output(),'invoice.pdf')->view('templates.emails.invoice',['data'=>$data]);
     }
 }

@@ -4,32 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\InvoiceData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceDataController extends Controller
 {
 
     function sendInvoice(Request  $request){
+
+        $image = $request->banner_file;  // your base64 encoded
+        $extension = explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+        $file_name = '/banners/'.time().'.'.$extension;
+
+        if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
+
+            $imageData = substr($image, strpos($image, ',') + 1);
+
+            $imageData = base64_decode($imageData);
+            Storage::disk('local')->put($file_name, $imageData);
+        }
+
         $data = $request->all();
 
-        $file_name = time().'_'.$request->banner_file->getClientOriginalName();
-        $file_path = $request->file('banner_file')->storeAs('uploads', $file_name, 'public');
-
-        $banner_public_url= public_path('storage').'/'.$file_path;
-
-        $type = pathinfo($banner_public_url, PATHINFO_EXTENSION);
-        $imgData = file_get_contents($banner_public_url);
-        $banner_public_url = 'data:image/' . $type . ';base64,' . base64_encode($imgData);
-
+        $banner_public_url='/home/zeroskil/services/storage/app'.$file_name;
 
 
         $InvoiceData=new InvoiceData();
         $InvoiceData->sender=$data['sender'];
         $InvoiceData->receiver=$data['receiver'];
-        $InvoiceData->banner_url=$file_path;
+        $InvoiceData->banner_url=$file_name;
         $InvoiceData->save();
 
         \Illuminate\Support\Facades\Mail::to($request->input('receiver'))->send(new \App\Mail\InvoiceSend($request,$banner_public_url));
 
     }
-    //
 }
