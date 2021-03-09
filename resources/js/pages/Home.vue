@@ -3,21 +3,20 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header ">INVOICE</div>
-                    <!--                    Primary Invoice Container-->
+                    <div class="card-header ">Your Online Invoicing Tool</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 float-left">
+                            <div class="col-md-6 ">
                                 <div class="input-group">
                                     <picture-input ref="banner_img" @change="selectFile" width="200" height="200"
-                                                   margin="16" accept="image/jpeg,image/png" size="100"
+                                                   accept="image/jpeg,image/png" size="100"
                                                    :removable="true" :customStrings="{drag: 'Your Logo here'}">
                                     </picture-input>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="input-group float-right">
+                                <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">#</span>
                                     </div>
@@ -42,19 +41,17 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="input-group mt-3">
-                                    <input type="text" v-model="invoice_data.sender" class="form-control"
-                                           placeholder="Invoice From"/>
-                                </div>
-                                <div class="input-group mt-3">
-                                    <input type="text" v-model="invoice_data.receiver" class="form-control"
-                                           placeholder="Invoice To"/>
-                                </div>
-
+                        <div class="form-row mb-3 mt-3">
+                            <div class="col-3">
+                                <input type="text" v-model="invoice_data.sender" class="form-control"
+                                       placeholder="Invoice From"/>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" v-model="invoice_data.receiver" class="form-control"
+                                       placeholder="Invoice To"/>
                             </div>
                         </div>
+
 
                         <div class="row">
                             <div class="col-md-12">
@@ -62,11 +59,11 @@
                                 <table class="table">
                                     <thead class="thead-light">
                                     <tr>
-                                        <th scope="col">Item</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Rate</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Delete</th>
+                                        <th scope="col text-center">Item</th>
+                                        <th scope="col text-center">Quantity</th>
+                                        <th scope="col text-center">Rate</th>
+                                        <th scope="col text-center">Amount</th>
+                                        <th scope="col text-center">Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -74,7 +71,7 @@
                                         <td><input type="text" v-model="item.name"/></td>
                                         <td><input type="text" v-model="item.qty"/></td>
                                         <td><input type="text" v-model="item.rate"/></td>
-                                        <td class="row"><input type="text" v-model="item.amount"/></td>
+                                        <td class="row"><input type="text" disabled  :value="lineTotal[index]"/></td>
                                         <td>
                                             <button type="button" class="btn btn-danger" @click="removeRow(index)">X
                                             </button>
@@ -85,6 +82,29 @@
                                     <button type="button" class="btn btn-info" @click="addRow()">Add Item</button>
                                 </table>
                             </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Notes" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label >Sub Total</label>
+                                <label >${{total}}</label>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Terms">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control"  placeholder="Amount Paid">
+
+                            </div>
+
                         </div>
 
                         <div class="row">
@@ -117,6 +137,18 @@ export default {
                 items: [{}]
             },
             date: new Date().toDateString("yyyy-MM-dd"),
+        }
+    },
+    computed: {
+        lineTotal() {
+            return this.invoice_data.items.map((item) => {
+                return Number(item.qty * item.rate)
+            });
+        },
+        total() {
+            return this.invoice_data.items.reduce((total, item) => {
+                return total + item.qty * item.rate;
+            }, 0);
         }
     },
     methods: {
