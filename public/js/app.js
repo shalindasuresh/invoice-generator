@@ -2085,6 +2085,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2104,13 +2112,19 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     lineTotal: function lineTotal() {
       return this.invoice_data.items.map(function (item) {
-        return Number(item.qty * item.rate);
+        var itemTotal = Number(item.qty * item.rate);
+        return isNaN(itemTotal) ? 0.00 : itemTotal;
       });
     },
     total: function total() {
       return this.invoice_data.items.reduce(function (total, item) {
-        return total + item.qty * item.rate;
+        var subTotal = total + item.qty * item.rate;
+        return subTotal;
       }, 0);
+    },
+    balance: function balance() {
+      var balanceDue = Number(this.total - this.invoice_data.amount_paid);
+      return isNaN(balanceDue) ? 0.00 : balanceDue;
     }
   },
   methods: {
@@ -40688,7 +40702,29 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-row" }, [
-              _vm._m(4),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.invoice_data.notes,
+                      expression: "invoice_data.notes"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Notes" },
+                  domProps: { value: _vm.invoice_data.notes },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.invoice_data, "notes", $event.target.value)
+                    }
+                  }
+                })
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group col-md-6" }, [
                 _c("label", [_vm._v("Sub Total")]),
@@ -40697,7 +40733,89 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(5),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.invoice_data.terms,
+                      expression: "invoice_data.terms"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Terms" },
+                  domProps: { value: _vm.invoice_data.terms },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.invoice_data, "terms", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.invoice_data.amount_paid,
+                      expression: "invoice_data.amount_paid"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Amount Paid" },
+                  domProps: { value: _vm.invoice_data.amount_paid },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.invoice_data,
+                        "amount_paid",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.invoice_data.tax,
+                      expression: "invoice_data.tax"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Tax" },
+                  domProps: { value: _vm.invoice_data.tax },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.invoice_data, "tax", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", [_vm._v("Balance Due")]),
+                _vm._v(" "),
+                _c("label", [_vm._v("$" + _vm._s(_vm.balance))])
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-md-6 mt-3" }, [
@@ -40764,37 +40882,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Amount")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Delete")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group col-md-6" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Notes" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-row" }, [
-      _c("div", { staticClass: "form-group col-md-6" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Terms" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group col-md-6" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Amount Paid" }
-        })
       ])
     ])
   }

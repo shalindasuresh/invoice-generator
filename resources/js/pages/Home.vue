@@ -87,7 +87,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" placeholder="Notes" >
+                                <input type="text" v-model="invoice_data.notes" class="form-control" placeholder="Notes" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label >Sub Total</label>
@@ -98,11 +98,19 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" placeholder="Terms">
+                                <input type="text" v-model="invoice_data.terms" class="form-control" placeholder="Terms" />
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control"  placeholder="Amount Paid">
+                                <input type="text" v-model="invoice_data.amount_paid" class="form-control"  placeholder="Amount Paid"/>
 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label >Balance Due</label>
+                                <label >${{balance}}</label>
                             </div>
 
                         </div>
@@ -142,13 +150,22 @@ export default {
     computed: {
         lineTotal() {
             return this.invoice_data.items.map((item) => {
-                return Number(item.qty * item.rate)
+                const itemTotal=Number(item.qty * item.rate);
+                return isNaN(itemTotal)?0.00:itemTotal
             });
         },
         total() {
             return this.invoice_data.items.reduce((total, item) => {
-                return total + item.qty * item.rate;
+                const subTotal=total + item.qty * item.rate;
+                return subTotal
             }, 0);
+        },
+
+        balance(){
+
+            const balanceDue=Number(this.total - this.invoice_data.amount_paid);
+            return isNaN(balanceDue)?0.00:balanceDue
+
         }
     },
     methods: {
