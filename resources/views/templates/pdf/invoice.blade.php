@@ -19,6 +19,7 @@
 {{--<img src="<?php echo $data['banner_url']?>" width="150" height="150"/>--}}
 {{--</body>--}}
 <body>
+
 <div class="row">
     <div class="col-md-6">
         <div id="preview">
@@ -39,12 +40,12 @@
 
             </div>
             <div class="col-md-6">
-                <div>
-                    <span class="text-black-50">Ship To</span>
-                </div>
-                <div>
-                    <span class="font-weight-bold">{{$data['receiver']}}</span>
-                </div>
+{{--                <div>--}}
+{{--                    <span class="text-black-50">Ship To</span>--}}
+{{--                </div>--}}
+{{--                <div>--}}
+{{--                    <span class="font-weight-bold">{{$data['receiver']}}</span>--}}
+{{--                </div>--}}
 
             </div>
         </div>
@@ -57,34 +58,53 @@
     </div>
 
 </div>
+<style>
+    #items {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-<div class="row">
-    <div class="col-md-12">
+    #items td, #items th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
 
-        <table class="table">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col text-center">Item</th>
-                <th scope="col text-center">Quantity</th>
-                <th scope="col text-center">Rate</th>
-                <th scope="col text-center">Amount</th>
-            </tr>
-            </thead>
-            <tbody>
+    #items tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #items tr:hover {
+        background-color: #ddd;
+    }
+
+    #items th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #999d99;
+        color: white;
+    }
+</style>
 
 
-            @foreach (json_decode($data['items']) as $item)
-                <tr>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->qty }}</td>
-                    <td>{{ $item->rate }}</td>
-                    <td class="row">{{ $item->qty* $item->rate }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+<table id="items">
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>Amount</th>
+    </tr>
+
+    @foreach (json_decode($data['items']) as $item)
+        <tr>
+            <td data-column="Item">{{ $item->name }}</td>
+            <td data-column="Quantity">{{ $item->qty }}</td>
+            <td data-column="Rate">{{ $item->rate }}</td>
+            <td data-column="Amount">{{ $item->qty* $item->rate }}</td>
+        </tr>
+    @endforeach
+</table>
 
 <div class="row">
     <div class="col-md-6">

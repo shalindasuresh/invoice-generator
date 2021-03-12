@@ -6,7 +6,7 @@
                     <div class="card-header ">Your Online Invoicing Tool</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 ">
+                            <div class="col-md-6">
                                 <div class="input-group">
                                     <picture-input ref="banner_img" @change="selectFile" width="200" height="200"
                                                    accept="image/jpeg,image/png" size="10"
@@ -17,28 +17,34 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">#</span>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">#</span>
+                                        </div>
+                                        <input v-model="invoice_data.invoice_number" class="form-control"
+                                               placeholder="Invoice Number">
                                     </div>
-                                    <input v-model="invoice_data.invoice_number" placeholder="Invoice Number">
-                                </div>
-                                <div class="input-group mt-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Invoice Date</span>
+                                    <div class="input-group mt-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="padding: 3px;">Invoice Date</span>
+                                        </div>
+
+                                        <date-pick v-model="invoice_data.date" class="form-control"
+                                                   :isDateDisabled="isPastDate"></date-pick>
                                     </div>
 
-                                    <date-pick v-model="invoice_data.date" :isDateDisabled="isPastDate"></date-pick>
-                                </div>
+                                    <div class="input-group mt-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="padding: 3px;">Due Date</span>
+                                        </div>
 
-                                <div class="input-group mt-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Due Date</span>
+                                        <date-pick v-model="invoice_data.due_date" class="form-control"
+                                                   :isDateDisabled="isPastDate"></date-pick>
                                     </div>
 
-                                    <date-pick v-model="invoice_data.due_date" :isDateDisabled="isPastDate"></date-pick>
                                 </div>
-
                             </div>
                         </div>
 
@@ -72,7 +78,7 @@
                                         <td><input type="text" v-model="item.name"/></td>
                                         <td><input type="text" v-model="item.qty"/></td>
                                         <td><input type="text" v-model="item.rate"/></td>
-                                        <td class="row"><input type="text" disabled  :value="lineTotal[index]"/></td>
+                                        <td class="row"><input type="text" disabled :value="lineTotal[index]"/></td>
                                         <td>
                                             <button type="button" class="btn btn-danger" @click="removeRow(index)">X
                                             </button>
@@ -80,44 +86,105 @@
 
                                     </tr>
                                     </tbody>
-                                    <button type="button" class="btn btn-info" @click="addRow()">Add Item</button>
+
                                 </table>
                             </div>
                         </div>
 
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <input type="text" v-model="invoice_data.notes" class="form-control" placeholder="Notes" >
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-info float-right" @click="addRow()">Add Item
+                                </button>
                             </div>
+                        </div>
+
+
+                        <div class="form-row mt-3">
                             <div class="form-group col-md-6">
-                                <label >Sub Total</label>
-                                <label >${{subTotal}}</label>
+                                <textarea v-model="invoice_data.notes" class="form-control" placeholder="Notes"/>
+                            </div>
+                            <div class="form-group col-md-3">
+                            </div>
+                            <div class="form-group col-md-3 text-right">
+                                <span>Sub Total</span>
+                                <span>${{ subTotal }}</span>
                             </div>
 
                         </div>
 
                         <div class="form-row">
+
                             <div class="form-group col-md-6">
-                                <input type="text" v-model="invoice_data.terms" class="form-control" placeholder="Terms" />
+                                <textarea v-model="invoice_data.terms" class="form-control" placeholder="Terms"/>
                             </div>
+
+                            <div class="form-group col-md-3">
+                            </div>
+                                <div class="form-group col-md-3">
+
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label for="inputPassword6">Tax</label>
+                                    <input type="text" v-model="invoice_data.tax" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                </div>
+                            </div>
+                            </div>
+                            <!--                            <div class="form-group col-md-6">-->
+                            <!--                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>-->
+
+                            <!--                            </div>-->
+
+                        </div>
+
+                        <div class="form-row">
+
                             <div class="form-group col-md-6">
-                                <input type="text" v-model="invoice_data.amount_paid" class="form-control"  placeholder="Amount Paid"/>
+                                <!--                                <textarea v-model="invoice_data.terms" class="form-control" placeholder="Terms" />-->
+                            </div>
+                            <div class="form-group col-md-3">
+                            </div>
+                            <div class="form-group col-md-3 text-right ">
+                                <label>Total</label>
+                                <label>${{ total }}</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-8">
 
                             </div>
-<!--                            <div class="form-group col-md-6">-->
-<!--                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>-->
 
+                            <div class="form-group col-md-4">
+
+
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label for="inputPassword6">Amount Paid</label>
+                                    <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                </div>
+                            </div>
+                            </div>
+<!--                            <div class="form-inline col-md-3">-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="inputPassword6">Amount Paid</label>-->
+<!--                                    <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">-->
+<!--                                </div>-->
 <!--                            </div>-->
-<!--                            <div class="form-group col-md-6">-->
-<!--                                <label >Total</label>-->
-<!--                                <label >${{total}}</label>-->
-<!--                            </div>-->
-                            <div class="form-group col-md-6">
-                                <label >Balance Due</label>
-                                <label >${{balance}}</label>
-                            </div>
+                        </div>
 
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+
+                            </div>
+                            <div class="form-group col-md-3">
+
+                            </div>
+                            <div class="form-group col-md-3 text-right ">
+                                <label>Balance Due</label>
+                                <label>${{ balance }}</label>
+
+                            </div>
                         </div>
 
                         <div class="row">
@@ -147,7 +214,9 @@ export default {
     data() {
         return {
             invoice_data: {
-                items: [{}]
+                items: [{}],
+                tax: 0,
+                amount_paid:0,
             },
             date: new Date().toDateString("yyyy-MM-dd"),
         }
@@ -155,26 +224,26 @@ export default {
     computed: {
         lineTotal() {
             return this.invoice_data.items.map((item) => {
-                const itemTotal=Number(item.qty * item.rate);
-                return isNaN(itemTotal)?0.00:itemTotal
+                const itemTotal = Number(item.qty * item.rate);
+                return isNaN(itemTotal) ? 0.00 : itemTotal
             });
         },
         subTotal() {
             return this.invoice_data.items.reduce((total, item) => {
-                const subTotal=Number(total + item.qty * item.rate);
-                return isNaN(subTotal)?0.00:subTotal
+                const subTotal = Number(total + item.qty * item.rate);
+                return isNaN(subTotal) ? 0.00 : subTotal
             }, 0);
         },
         total() {
-            return this.invoice_data.items.reduce((total, item) => {
-                const totalAmount=(total + item.qty * item.rate+Number(this.invoice_data.tax))-Number(this.invoice_data.amount_paid);
-                return totalAmount
+            return Number(this.invoice_data.tax)+this.invoice_data.items.reduce((total, item) => {
+                const totalAmount = (total + item.qty * item.rate);
+                return isNaN(totalAmount) ? 0.00 : totalAmount
             }, 0);
         },
-        balance(){
+        balance() {
 
-            const balanceDue=Number(this.subTotal - this.invoice_data.amount_paid);
-            return isNaN(balanceDue)?0.00:balanceDue
+            const balanceDue = Number(this.total - this.invoice_data.amount_paid);
+            return isNaN(balanceDue) ? 0.00 : balanceDue
 
         }
     },

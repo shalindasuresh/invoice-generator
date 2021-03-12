@@ -2098,6 +2098,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2109,7 +2176,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       invoice_data: {
-        items: [{}]
+        items: [{}],
+        tax: 0,
+        amount_paid: 0
       },
       date: new Date().toDateString("yyyy-MM-dd")
     };
@@ -2128,15 +2197,13 @@ __webpack_require__.r(__webpack_exports__);
       }, 0);
     },
     total: function total() {
-      var _this = this;
-
-      return this.invoice_data.items.reduce(function (total, item) {
-        var totalAmount = total + item.qty * item.rate + Number(_this.invoice_data.tax) - Number(_this.invoice_data.amount_paid);
-        return totalAmount;
+      return Number(this.invoice_data.tax) + this.invoice_data.items.reduce(function (total, item) {
+        var totalAmount = total + item.qty * item.rate;
+        return isNaN(totalAmount) ? 0.00 : totalAmount;
       }, 0);
     },
     balance: function balance() {
-      var balanceDue = Number(this.subTotal - this.invoice_data.amount_paid);
+      var balanceDue = Number(this.total - this.invoice_data.amount_paid);
       return isNaN(balanceDue) ? 0.00 : balanceDue;
     }
   },
@@ -40553,7 +40620,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6 " }, [
+              _c("div", { staticClass: "col-md-6" }, [
                 _c(
                   "div",
                   { staticClass: "input-group" },
@@ -40577,74 +40644,81 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
-                _c("div", { staticClass: "input-group" }, [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.invoice_data.invoice_number,
-                        expression: "invoice_data.invoice_number"
-                      }
-                    ],
-                    attrs: { placeholder: "Invoice Number" },
-                    domProps: { value: _vm.invoice_data.invoice_number },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c("div", { staticClass: "col-md-6" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("div", { staticClass: "input-group" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.invoice_data.invoice_number,
+                          expression: "invoice_data.invoice_number"
                         }
-                        _vm.$set(
-                          _vm.invoice_data,
-                          "invoice_number",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "input-group mt-3" },
-                  [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c("date-pick", {
-                      attrs: { isDateDisabled: _vm.isPastDate },
-                      model: {
-                        value: _vm.invoice_data.date,
-                        callback: function($$v) {
-                          _vm.$set(_vm.invoice_data, "date", $$v)
-                        },
-                        expression: "invoice_data.date"
+                      ],
+                      staticClass: "form-control",
+                      attrs: { placeholder: "Invoice Number" },
+                      domProps: { value: _vm.invoice_data.invoice_number },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.invoice_data,
+                            "invoice_number",
+                            $event.target.value
+                          )
+                        }
                       }
                     })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "input-group mt-3" },
-                  [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c("date-pick", {
-                      attrs: { isDateDisabled: _vm.isPastDate },
-                      model: {
-                        value: _vm.invoice_data.due_date,
-                        callback: function($$v) {
-                          _vm.$set(_vm.invoice_data, "due_date", $$v)
-                        },
-                        expression: "invoice_data.due_date"
-                      }
-                    })
-                  ],
-                  1
-                )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-group mt-3" },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("date-pick", {
+                        staticClass: "form-control",
+                        attrs: { isDateDisabled: _vm.isPastDate },
+                        model: {
+                          value: _vm.invoice_data.date,
+                          callback: function($$v) {
+                            _vm.$set(_vm.invoice_data, "date", $$v)
+                          },
+                          expression: "invoice_data.date"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-group mt-3" },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("date-pick", {
+                        staticClass: "form-control",
+                        attrs: { isDateDisabled: _vm.isPastDate },
+                        model: {
+                          value: _vm.invoice_data.due_date,
+                          callback: function($$v) {
+                            _vm.$set(_vm.invoice_data, "due_date", $$v)
+                          },
+                          expression: "invoice_data.due_date"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
               ])
             ]),
             _vm._v(" "),
@@ -40809,28 +40883,32 @@ var render = function() {
                       ])
                     }),
                     0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-info",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.addRow()
-                        }
-                      }
-                    },
-                    [_vm._v("Add Item")]
                   )
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-row" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info float-right",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.addRow()
+                      }
+                    }
+                  },
+                  [_vm._v("Add Item\n                                ")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row mt-3" }, [
               _c("div", { staticClass: "form-group col-md-6" }, [
-                _c("input", {
+                _c("textarea", {
                   directives: [
                     {
                       name: "model",
@@ -40840,7 +40918,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Notes" },
+                  attrs: { placeholder: "Notes" },
                   domProps: { value: _vm.invoice_data.notes },
                   on: {
                     input: function($event) {
@@ -40853,16 +40931,18 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group col-md-6" }, [
-                _c("label", [_vm._v("Sub Total")]),
+              _c("div", { staticClass: "form-group col-md-3" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-3 text-right" }, [
+                _c("span", [_vm._v("Sub Total")]),
                 _vm._v(" "),
-                _c("label", [_vm._v("$" + _vm._s(_vm.subTotal))])
+                _c("span", [_vm._v("$" + _vm._s(_vm.subTotal))])
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-row" }, [
               _c("div", { staticClass: "form-group col-md-6" }, [
-                _c("input", {
+                _c("textarea", {
                   directives: [
                     {
                       name: "model",
@@ -40872,7 +40952,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Terms" },
+                  attrs: { placeholder: "Terms" },
                   domProps: { value: _vm.invoice_data.terms },
                   on: {
                     input: function($event) {
@@ -40885,35 +40965,107 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.invoice_data.amount_paid,
-                      expression: "invoice_data.amount_paid"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Amount Paid" },
-                  domProps: { value: _vm.invoice_data.amount_paid },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.invoice_data,
-                        "amount_paid",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
+              _c("div", { staticClass: "form-group col-md-3" }),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group col-md-6" }, [
+              _c("div", { staticClass: "form-group col-md-3" }, [
+                _c("div", { staticClass: "form-inline" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "inputPassword6" } }, [
+                      _vm._v("Tax")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.invoice_data.tax,
+                          expression: "invoice_data.tax"
+                        }
+                      ],
+                      staticClass: "form-control mx-sm-3",
+                      attrs: {
+                        type: "text",
+                        id: "inputPassword6",
+                        "aria-describedby": "passwordHelpInline"
+                      },
+                      domProps: { value: _vm.invoice_data.tax },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.invoice_data, "tax", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-3" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-3 text-right " }, [
+                _c("label", [_vm._v("Total")]),
+                _vm._v(" "),
+                _c("label", [_vm._v("$" + _vm._s(_vm.total))])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-8" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-4" }, [
+                _c("div", { staticClass: "form-inline" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "inputPassword6" } }, [
+                      _vm._v("Amount Paid")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.invoice_data.amount_paid,
+                          expression: "invoice_data.amount_paid"
+                        }
+                      ],
+                      staticClass: "form-control mx-sm-3",
+                      attrs: {
+                        type: "text",
+                        id: "inputPassword6",
+                        "aria-describedby": "passwordHelpInline"
+                      },
+                      domProps: { value: _vm.invoice_data.amount_paid },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.invoice_data,
+                            "amount_paid",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-3" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-3 text-right " }, [
                 _c("label", [_vm._v("Balance Due")]),
                 _vm._v(" "),
                 _c("label", [_vm._v("$" + _vm._s(_vm.balance))])
@@ -40959,7 +41111,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group-prepend" }, [
-      _c("span", { staticClass: "input-group-text" }, [_vm._v("Invoice Date")])
+      _c(
+        "span",
+        { staticClass: "input-group-text", staticStyle: { padding: "3px" } },
+        [_vm._v("Invoice Date")]
+      )
     ])
   },
   function() {
@@ -40967,7 +41123,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group-prepend" }, [
-      _c("span", { staticClass: "input-group-text" }, [_vm._v("Due Date")])
+      _c(
+        "span",
+        { staticClass: "input-group-text", staticStyle: { padding: "3px" } },
+        [_vm._v("Due Date")]
+      )
     ])
   },
   function() {
@@ -41015,7 +41175,9 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Preview")]),
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Invoice Preview")
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "row" }, [

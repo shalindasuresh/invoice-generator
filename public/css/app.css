@@ -10012,15 +10012,19 @@ h3 {
   background-size: auto;
 }
 
-input[type=text] {
-  height: 100%;
-  width: 100% !important;
-}
-
 .preview-container {
   float: left;
 }
 
 td {
   padding: 0 20px 0 20px;
+}
+
+.vdpComponent {
+  padding: 0 !important;
+}
+
+.vdpComponent input[type=text] {
+  height: 100% !important;
+  border: none;
 }
