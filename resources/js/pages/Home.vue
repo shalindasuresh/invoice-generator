@@ -9,7 +9,8 @@
                             <div class="col-md-6 ">
                                 <div class="input-group">
                                     <picture-input ref="banner_img" @change="selectFile" width="200" height="200"
-                                                   accept="image/jpeg,image/png" size="100"
+                                                   accept="image/jpeg,image/png" size="10"
+                                                   margin="16"
                                                    :removable="true" :customStrings="{drag: 'Your Logo here'}">
                                     </picture-input>
                                 </div>
@@ -91,7 +92,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label >Sub Total</label>
-                                <label >${{total}}</label>
+                                <label >${{subTotal}}</label>
                             </div>
 
                         </div>
@@ -104,10 +105,14 @@
                                 <input type="text" v-model="invoice_data.amount_paid" class="form-control"  placeholder="Amount Paid"/>
 
                             </div>
-                            <div class="form-group col-md-6">
-                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>
+<!--                            <div class="form-group col-md-6">-->
+<!--                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>-->
 
-                            </div>
+<!--                            </div>-->
+<!--                            <div class="form-group col-md-6">-->
+<!--                                <label >Total</label>-->
+<!--                                <label >${{total}}</label>-->
+<!--                            </div>-->
                             <div class="form-group col-md-6">
                                 <label >Balance Due</label>
                                 <label >${{balance}}</label>
@@ -154,16 +159,21 @@ export default {
                 return isNaN(itemTotal)?0.00:itemTotal
             });
         },
-        total() {
+        subTotal() {
             return this.invoice_data.items.reduce((total, item) => {
-                const subTotal=total + item.qty * item.rate;
-                return subTotal
+                const subTotal=Number(total + item.qty * item.rate);
+                return isNaN(subTotal)?0.00:subTotal
             }, 0);
         },
-
+        total() {
+            return this.invoice_data.items.reduce((total, item) => {
+                const totalAmount=(total + item.qty * item.rate+Number(this.invoice_data.tax))-Number(this.invoice_data.amount_paid);
+                return totalAmount
+            }, 0);
+        },
         balance(){
 
-            const balanceDue=Number(this.total - this.invoice_data.amount_paid);
+            const balanceDue=Number(this.subTotal - this.invoice_data.amount_paid);
             return isNaN(balanceDue)?0.00:balanceDue
 
         }

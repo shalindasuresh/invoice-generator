@@ -2093,6 +2093,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2116,14 +2121,22 @@ __webpack_require__.r(__webpack_exports__);
         return isNaN(itemTotal) ? 0.00 : itemTotal;
       });
     },
-    total: function total() {
+    subTotal: function subTotal() {
       return this.invoice_data.items.reduce(function (total, item) {
-        var subTotal = total + item.qty * item.rate;
-        return subTotal;
+        var subTotal = Number(total + item.qty * item.rate);
+        return isNaN(subTotal) ? 0.00 : subTotal;
+      }, 0);
+    },
+    total: function total() {
+      var _this = this;
+
+      return this.invoice_data.items.reduce(function (total, item) {
+        var totalAmount = total + item.qty * item.rate + Number(_this.invoice_data.tax) - Number(_this.invoice_data.amount_paid);
+        return totalAmount;
       }, 0);
     },
     balance: function balance() {
-      var balanceDue = Number(this.total - this.invoice_data.amount_paid);
+      var balanceDue = Number(this.subTotal - this.invoice_data.amount_paid);
       return isNaN(balanceDue) ? 0.00 : balanceDue;
     }
   },
@@ -2205,6 +2218,88 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2213,7 +2308,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       invoice_data: {
         sender: null,
         receiver: null,
-        banner_file: null
+        banner_file: null,
+        amount_paid: 0,
+        items: null,
+        notes: null,
+        terms: null
       },
       isLoading: false,
       status: '',
@@ -2226,8 +2325,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var userData = this.$store.getters.getInvoiceData;
     this.invoice_data.banner_file = userData.banner_file;
+    this.invoice_data.items = userData.items;
     this.invoice_data.sender = userData.sender;
     this.invoice_data.receiver = userData.receiver;
+    this.invoice_data.amount_paid = userData.amount_paid;
+    this.invoice_data.notes = userData.notes;
+    this.invoice_data.terms = userData.terms;
+  },
+  computed: {
+    lineTotal: function lineTotal() {
+      return this.invoice_data.items.map(function (item) {
+        var itemTotal = Number(item.qty * item.rate);
+        return isNaN(itemTotal) ? 0.00 : itemTotal;
+      });
+    },
+    total: function total() {
+      return this.invoice_data.items.reduce(function (total, item) {
+        var subTotal = total + item.qty * item.rate;
+        return subTotal;
+      }, 0);
+    },
+    balance: function balance() {
+      var balanceDue = Number(this.total - this.invoice_data.amount_paid);
+      return isNaN(balanceDue) ? 0.00 : balanceDue;
+    }
   },
   methods: {
     sendInvoice: function sendInvoice() {
@@ -2255,20 +2376,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 data.append('banner_file', _this.invoice_data.banner_file);
                 data.append('sender', _this.invoice_data.sender);
                 data.append('receiver', _this.invoice_data.receiver);
-                _context.next = 12;
+                data.append('total', _this.total);
+                data.append('amount_paid', _this.invoice_data.amount_paid);
+                data.append('notes', _this.invoice_data.notes);
+                data.append('terms', _this.invoice_data.terms);
+                data.append('items', JSON.stringify(_this.invoice_data.items));
+                _context.next = 17;
                 return axios.post('/send', data, config);
 
-              case 12:
+              case 17:
                 resp = _context.sent;
                 _this.isLoading = false;
                 _this.status = true; // or s
 
                 _this.buttonText = "Success";
-                _context.next = 24;
+                _context.next = 29;
                 break;
 
-              case 18:
-                _context.prev = 18;
+              case 23:
+                _context.prev = 23;
                 _context.t0 = _context["catch"](4);
                 // Handle Error Here
                 console.error(_context.t0);
@@ -2277,16 +2403,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.buttonText = "Error";
 
-              case 24:
-                _context.prev = 24;
-                return _context.finish(24);
+              case 29:
+                _context.prev = 29;
+                return _context.finish(29);
 
-              case 26:
+              case 31:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[4, 18, 24, 26]]);
+        }, _callee, null, [[4, 23, 29, 31]]);
       }))();
     }
   }
@@ -40438,7 +40564,8 @@ var render = function() {
                         width: "200",
                         height: "200",
                         accept: "image/jpeg,image/png",
-                        size: "100",
+                        size: "10",
+                        margin: "16",
                         removable: true,
                         customStrings: { drag: "Your Logo here" }
                       },
@@ -40674,7 +40801,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "X\n                                        "
+                                "X\n                                            "
                               )
                             ]
                           )
@@ -40729,7 +40856,7 @@ var render = function() {
               _c("div", { staticClass: "form-group col-md-6" }, [
                 _c("label", [_vm._v("Sub Total")]),
                 _vm._v(" "),
-                _c("label", [_vm._v("$" + _vm._s(_vm.total))])
+                _c("label", [_vm._v("$" + _vm._s(_vm.subTotal))])
               ])
             ]),
             _vm._v(" "),
@@ -40787,30 +40914,6 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.invoice_data.tax,
-                      expression: "invoice_data.tax"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Tax" },
-                  domProps: { value: _vm.invoice_data.tax },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.invoice_data, "tax", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group col-md-6" }, [
                 _c("label", [_vm._v("Balance Due")]),
                 _vm._v(" "),
                 _c("label", [_vm._v("$" + _vm._s(_vm.balance))])
@@ -40830,7 +40933,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Preview Invoice\n                            ")]
+                  [_vm._v("Preview Invoice\n                                ")]
                 )
               ]),
               _vm._v(" "),
@@ -40914,46 +41017,181 @@ var render = function() {
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [_vm._v("Preview")]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            [
-              _c("div", { attrs: { id: "preview" } }, [
-                this.invoice_data.banner_file
-                  ? _c("img", { attrs: { src: this.invoice_data.banner_file } })
-                  : _vm._e()
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { attrs: { id: "preview" } }, [
+                  this.invoice_data.banner_file
+                    ? _c("img", {
+                        attrs: { src: this.invoice_data.banner_file }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("span", { staticClass: "font-weight-bold" }, [
+                    _vm._v(_vm._s(this.invoice_data.sender))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("span", { staticClass: "font-weight-bold" }, [
+                        _vm._v(_vm._s(this.invoice_data.receiver))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("span", { staticClass: "font-weight-bold" }, [
+                        _vm._v(_vm._s(this.invoice_data.receiver))
+                      ])
+                    ])
+                  ])
+                ])
               ]),
               _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(this.invoice_data.sender))]),
+              _vm._m(2)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("table", { staticClass: "table" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.invoice_data.items, function(item, index) {
+                      return _c("tr", [
+                        _c("td", [_vm._v(_vm._s(item.name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.qty))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.rate))]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "row" }, [
+                          _vm._v(_vm._s(_vm.lineTotal[index]))
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6" }),
               _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(this.invoice_data.receiver))]),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("p", [
+                  _c("span", [_vm._v("Total Amount :" + _vm._s(_vm.total))])
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("span", [
+                    _vm._v(
+                      "Amount Paid :" + _vm._s(_vm.invoice_data.amount_paid)
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("label", [_vm._v("Notes")]),
+                _vm._v(" "),
+                _c("p", [_vm._v(_vm._s(_vm.invoice_data.notes))])
+              ]),
               _vm._v(" "),
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("label", [_vm._v("Terms")]),
+                _vm._v(" "),
+                _c("p", [_vm._v(_vm._s(_vm.invoice_data.terms))])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
               _c(
-                "vue-button-spinner",
-                _vm._b(
-                  {
-                    attrs: { disabled: _vm.isLoading },
-                    nativeOn: {
-                      click: function($event) {
-                        return _vm.sendInvoice($event)
-                      }
-                    }
-                  },
-                  "vue-button-spinner",
-                  { isLoading: _vm.isLoading, status: _vm.status },
-                  false
-                ),
-                [_c("span", [_vm._v(_vm._s(_vm.buttonText))])]
+                "div",
+                { staticClass: "col-md-12" },
+                [
+                  _c(
+                    "vue-button-spinner",
+                    _vm._b(
+                      {
+                        attrs: { disabled: _vm.isLoading },
+                        nativeOn: {
+                          click: function($event) {
+                            return _vm.sendInvoice($event)
+                          }
+                        }
+                      },
+                      "vue-button-spinner",
+                      { isLoading: _vm.isLoading, status: _vm.status },
+                      false
+                    ),
+                    [_c("span", [_vm._v(_vm._s(_vm.buttonText))])]
+                  )
+                ],
+                1
               )
-            ],
-            1
-          )
+            ])
+          ])
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("span", { staticClass: "text-black-50" }, [_vm._v("Bill To")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("span", { staticClass: "text-black-50" }, [_vm._v("Ship To")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("h2", [_vm._v("INVOICE")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Item")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Quantity")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Rate")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col text-center" } }, [_vm._v("Amount")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
