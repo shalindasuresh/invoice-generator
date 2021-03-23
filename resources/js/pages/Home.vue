@@ -48,14 +48,14 @@
                             </div>
                         </div>
 
-                        <div class="form-row mb-3 mt-3">
+                        <div class="form-row mb-4 mt-4 row ">
+                            <label for="staticEmail" class="col-col col-form-label">Invoice From</label>
                             <div class="col-3">
-                                <input type="text" v-model="invoice_data.sender" class="form-control"
-                                       placeholder="Invoice From"/>
+                                <input type="text" required id="staticEmail" v-model="invoice_data.sender" class="form-control"/>
                             </div>
+                            <label for="staticEmail" class="col-col col-form-label">Invoice To</label>
                             <div class="col-3">
-                                <input type="text" v-model="invoice_data.receiver" class="form-control"
-                                       placeholder="Invoice To"/>
+                                <input type="text" v-model="invoice_data.receiver" class="form-control"/>
                             </div>
                         </div>
 
@@ -120,14 +120,15 @@
 
                             <div class="form-group col-md-3">
                             </div>
-                                <div class="form-group col-md-3">
+                            <div class="form-group col-md-3">
 
-                            <div class="form-inline">
-                                <div class="form-group">
-                                    <label for="inputPassword6">Tax</label>
-                                    <input type="text" v-model="invoice_data.tax" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="inputPassword6">Tax</label>
+                                        <input type="text" v-model="invoice_data.tax" id="inputPassword6"
+                                               class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                             <!--                            <div class="form-group col-md-6">-->
                             <!--                                <input type="text" v-model="invoice_data.tax" class="form-control"  placeholder="Tax"/>-->
@@ -157,19 +158,20 @@
                             <div class="form-group col-md-4">
 
 
-                            <div class="form-inline">
-                                <div class="form-group">
-                                    <label for="inputPassword6">Amount Paid</label>
-                                    <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="inputPassword6">Amount Paid</label>
+                                        <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6"
+                                               class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-<!--                            <div class="form-inline col-md-3">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="inputPassword6">Amount Paid</label>-->
-<!--                                    <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                            <div class="form-inline col-md-3">-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="inputPassword6">Amount Paid</label>-->
+                            <!--                                    <input type="text" v-model="invoice_data.amount_paid" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
 
                         <div class="form-row">
@@ -216,7 +218,7 @@ export default {
             invoice_data: {
                 items: [{}],
                 tax: 0,
-                amount_paid:0,
+                amount_paid: 0,
             },
             date: new Date().toDateString("yyyy-MM-dd"),
         }
@@ -235,7 +237,7 @@ export default {
             }, 0);
         },
         total() {
-            return Number(this.invoice_data.tax)+this.invoice_data.items.reduce((total, item) => {
+            return Number(this.invoice_data.tax) + this.invoice_data.items.reduce((total, item) => {
                 const totalAmount = (total + item.qty * item.rate);
                 return isNaN(totalAmount) ? 0.00 : totalAmount
             }, 0);

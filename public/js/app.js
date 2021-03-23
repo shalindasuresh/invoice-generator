@@ -2165,6 +2165,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2394,6 +2396,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.invoice_data.banner_file = userData.banner_file;
     this.invoice_data.items = userData.items;
     this.invoice_data.sender = userData.sender;
+    this.invoice_data.date = userData.receiver;
+    this.invoice_data.due_date = userData.receiver;
+    this.invoice_data.balance = userData.receiver;
     this.invoice_data.receiver = userData.receiver;
     this.invoice_data.amount_paid = userData.amount_paid;
     this.invoice_data.notes = userData.notes;
@@ -2447,21 +2452,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 data.append('amount_paid', _this.invoice_data.amount_paid);
                 data.append('notes', _this.invoice_data.notes);
                 data.append('terms', _this.invoice_data.terms);
+                data.append('date', _this.invoice_data.date);
+                data.append('due_date', _this.invoice_data.due_date);
+                data.append('balance', _this.invoice_data.balance);
                 data.append('items', JSON.stringify(_this.invoice_data.items));
-                _context.next = 17;
+                _context.next = 20;
                 return axios.post('/send', data, config);
 
-              case 17:
+              case 20:
                 resp = _context.sent;
                 _this.isLoading = false;
                 _this.status = true; // or s
 
                 _this.buttonText = "Success";
-                _context.next = 29;
+                _context.next = 32;
                 break;
 
-              case 23:
-                _context.prev = 23;
+              case 26:
+                _context.prev = 26;
                 _context.t0 = _context["catch"](4);
                 // Handle Error Here
                 console.error(_context.t0);
@@ -2470,16 +2478,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.buttonText = "Error";
 
-              case 29:
-                _context.prev = 29;
-                return _context.finish(29);
+              case 32:
+                _context.prev = 32;
+                return _context.finish(32);
 
-              case 31:
+              case 34:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[4, 23, 29, 31]]);
+        }, _callee, null, [[4, 26, 32, 34]]);
       }))();
     }
   }
@@ -40722,7 +40730,16 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-row mb-3 mt-3" }, [
+            _c("div", { staticClass: "form-row mb-4 mt-4 row " }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-col col-form-label",
+                  attrs: { for: "staticEmail" }
+                },
+                [_vm._v("Invoice From")]
+              ),
+              _vm._v(" "),
               _c("div", { staticClass: "col-3" }, [
                 _c("input", {
                   directives: [
@@ -40734,7 +40751,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Invoice From" },
+                  attrs: { type: "text", required: "", id: "staticEmail" },
                   domProps: { value: _vm.invoice_data.sender },
                   on: {
                     input: function($event) {
@@ -40747,6 +40764,15 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "col-col col-form-label",
+                  attrs: { for: "staticEmail" }
+                },
+                [_vm._v("Invoice To")]
+              ),
+              _vm._v(" "),
               _c("div", { staticClass: "col-3" }, [
                 _c("input", {
                   directives: [
@@ -40758,7 +40784,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Invoice To" },
+                  attrs: { type: "text" },
                   domProps: { value: _vm.invoice_data.receiver },
                   on: {
                     input: function($event) {
@@ -40875,7 +40901,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "X\n                                            "
+                                "X\n                                        "
                               )
                             ]
                           )
@@ -40901,7 +40927,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Add Item\n                                ")]
+                  [_vm._v("Add Item\n                            ")]
                 )
               ])
             ]),
@@ -41085,7 +41111,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Preview Invoice\n                                ")]
+                  [_vm._v("Preview Invoice\n                            ")]
                 )
               ]),
               _vm._v(" "),
@@ -41289,6 +41315,7 @@ var render = function() {
                     "vue-button-spinner",
                     _vm._b(
                       {
+                        staticClass: "btn btn-primary",
                         attrs: { disabled: _vm.isLoading },
                         nativeOn: {
                           click: function($event) {

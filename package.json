@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "vee-validate": "^3.4.5",
         "vue-button-spinner": "^2.2.1",
         "vue-date-pick": "^1.4.1",
         "vue-picture-input": "^2.1.6",

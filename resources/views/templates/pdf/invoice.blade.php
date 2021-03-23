@@ -11,53 +11,6 @@
 //echo json_encode($data['items']);die;
 ?>
 
-{{--<body>--}}
-{{--<h1>{{$data['receiver']}}</h1>--}}
-{{--<h1>{{$data['sender']}}</h1>--}}
-{{--<img src="{{ $data['banner_url']}}"/>--}}
-{{--<img src="@php echo  $data['banner_url'] @endphp"/>--}}
-{{--<img src="<?php echo $data['banner_url']?>" width="150" height="150"/>--}}
-{{--</body>--}}
-<body>
-
-<div class="row">
-    <div class="col-md-6">
-        <div id="preview">
-            <img src="<?php echo $data['banner_url']?>" width="150" height="150"/>
-        </div>
-        <div>
-            <span class="font-weight-bold">{{$data['receiver']}}</span>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div>
-                    <span class="text-black-50">Bill To</span>
-                </div>
-                <div>
-                    <span class="font-weight-bold">{{$data['receiver']}}</span>
-                </div>
-
-            </div>
-            <div class="col-md-6">
-{{--                <div>--}}
-{{--                    <span class="text-black-50">Ship To</span>--}}
-{{--                </div>--}}
-{{--                <div>--}}
-{{--                    <span class="font-weight-bold">{{$data['receiver']}}</span>--}}
-{{--                </div>--}}
-
-            </div>
-        </div>
-
-    </div>
-
-    <div class="col-md-6">
-        <h2>INVOICE</h2>
-
-    </div>
-
-</div>
 <style>
     #items {
         font-family: Arial, Helvetica, sans-serif;
@@ -82,11 +35,58 @@
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background-color: #999d99;
-        color: white;
+        background-color: #e9ecef;
+        color: #838080;
     }
 </style>
 
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+    <tr>
+        <td>
+            <img src="<?php echo $data['banner_url']?>" width="150" height="150"/>
+        </td>
+        <td>
+            Invoice
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="font-weight-bold">{{$data['receiver']}}</span>
+        </td>
+        <td>
+            <span class="text-black-50">Bill To</span>
+            <div>
+                <span class="font-weight-bold">{{$data['receiver']}}</span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <p>Date :{{$data['date']}}</p>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Due Date :{{$data['due_date']}}</span>
+        </td>
+        <td>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <p>Balance Due :{{$data['balance']}}</span>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
 
 <table id="items">
     <tr>
@@ -105,34 +105,31 @@
         </tr>
     @endforeach
 </table>
+<div >
 
-<div class="row">
-    <div class="col-md-6">
-
+    <div></div>
+    <div></div>
+    <div>
+        <p>Sub Total :{{$data['total']}}</p>
+        <p>Total :{{$data['total']}}</p>
+        <p>Amount Paid :{{$data['amount_paid']}}</p>
     </div>
 
-    <div class="col-md-6">
-        <p>
-            <span>Total Amount :{{$data['total']}}</span>
-        </p>
-        <p>
-            <span>Amount Paid :{{$data['amount_paid']}}</span>
-        </p>
-    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <label>Notes</label>
+<div>
+
+    <div>
+        <p>Notes</p>
         <p>{{$data['notes']}}</p>
-    </div>
-    <div class="col-md-12">
-        <label>Terms</label>
+        <p>Terms</p>
         <p>{{$data['terms']}}</p>
     </div>
+    <div></div>
+    <div>
+
+    </div>
+
 </div>
-
-
 </body>
-
 </html>

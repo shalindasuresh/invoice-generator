@@ -24,3 +24,19 @@ Route::post('/send', [\App\Http\Controllers\InvoiceDataController::class, 'sendI
 //Route::get('/email', function () {
 //   return view('templates.emails.invoice', ['data'=>['receiver' => 'shalinda1990@gmail.com','sender' => 'aravinda0@gmail.com']]);
 //});
+
+
+Route::get('/pdf', function () {
+   return view('templates.pdf.invoice',
+       ['data'=>['receiver' => 'shalinda1990@gmail.com','sender' => 'aravinda0@gmail.com',
+       'banner_url'=>'https://s1.logaster.com/static/v3/img/products/logo.png',
+       'items'=>'{}',
+       'date'=>200,
+       'due_date'=>200,
+       'balance'=>200,
+       'total'=>200,
+       'amount_paid'=>100,
+       'notes'=>"Hello this is my note",
+       'terms'=>"Hello this is terms and conditions",
+       ]]);
+});

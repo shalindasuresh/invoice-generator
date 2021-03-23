@@ -98,7 +98,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <vue-button-spinner v-bind="{isLoading, status}" :disabled="isLoading"
+                                <vue-button-spinner v-bind="{isLoading, status}" :disabled="isLoading" class="btn btn-primary"
                                                     @click.native="sendInvoice">
                                     <span>{{ buttonText }}</span>
                                 </vue-button-spinner>
@@ -142,6 +142,9 @@ export default {
         this.invoice_data.banner_file = userData.banner_file
         this.invoice_data.items = userData.items;
         this.invoice_data.sender = userData.sender
+        this.invoice_data.date = userData.receiver
+        this.invoice_data.due_date = userData.receiver
+        this.invoice_data.balance = userData.receiver
         this.invoice_data.receiver = userData.receiver
         this.invoice_data.amount_paid = userData.amount_paid
         this.invoice_data.notes = userData.notes
@@ -192,6 +195,9 @@ export default {
                 data.append('amount_paid', this.invoice_data.amount_paid)
                 data.append('notes', this.invoice_data.notes)
                 data.append('terms', this.invoice_data.terms)
+                data.append('date', this.invoice_data.date)
+                data.append('due_date', this.invoice_data.due_date)
+                data.append('balance', this.invoice_data.balance)
                 data.append('items',  JSON.stringify(this.invoice_data.items))
 
                 const resp = await axios.post('/send', data, config)
